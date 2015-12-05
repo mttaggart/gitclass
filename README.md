@@ -16,19 +16,23 @@ Then enter the new folder. You can run the scripts from where they are, or run `
 
 ### Creating a classroom
 
-    gitclass --create name-of-class
+    gitclass init name-of-class
 
-A new directory with your class name now exists.
+A new directory with your class name now exists. If `name-of-class` is omitted, a the current directory will be used as the container for the class.
 
 ### Adding students
 
-    gitclass --class /path/to/class/folder --add student-name
-    Enter the URL for student-name's repository: https://github.com/student/repo
-    Cloning repository for student-name...
-    Done.
+    gitclass add-student [name] [repo]
+
+If either `name` or `repo` is omitted, you will be prompted to enter a value.
 
 ### Pulling Student Repos
 Perform this every time you want to ensure you have the latest commits from your students.
 
-    gitclass --class /path/to/class/folder --pullall
-    
+    gitclass update [name] [-n --num-commits] [-d --date-format]
+
+This will update all repos if `[name]` is omitted, or a specific repo if stated. `--num-commits` and `--date-format` refer to the same options in Git. Defaults are `2` and `local`, respectively.
+
+### Removing students
+
+    gitclass remove-student name
