@@ -3,7 +3,7 @@ import os,sys,shutil
 
 if os.getuid() != 0:
     print("Must run as root!")
-    exit()
+    sys.exit()
 
 if sys.platform == "linux":
     INSTALL_PATH = "/opt/gitclass/"
@@ -13,7 +13,7 @@ elif sys.platform == "darwin":
     os.mkdir(INSTALL_PATH[0:-1])
 else:
     print("Windows not yet implemented; sorry!")
-    exit()
+    sys.exit()
 
 shutil.copy("gitclass",INSTALL_PATH)
 os.symlink(INSTALL_PATH + "gitclass", "/usr/local/bin/gitclass")
