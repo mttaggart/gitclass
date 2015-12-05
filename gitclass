@@ -1,0 +1,52 @@
+#!/usr/bin/python
+import os,sys,json,argparse
+
+def init(args):
+    new_class = os.getcwd() + "/" + args.dir
+    if args.dir!= "":
+        os.mkdir(new_class)
+        os.chdir(new_class)
+    class_data = {
+        "name":"",
+        "description":"",
+        "students":[],
+        "master_repo":""
+    }
+    print("Initializing new git class")
+    class_data["name"] = input("Name of the class: ")
+    class_data["description"] = input("Description for {}: ".format(class_data["name"]))
+    class_data["master_repo"] = input("URL of master repository: ")
+    new_json = open("class.json","w")
+    json.dump(class_data, new_json, indent="\t")
+
+def add_student(args):
+    try:
+        class_file = open("class.json","r")
+    except FileNotFoundError:
+        print("No class.json found.\nRun gitclass init!")
+        exit()
+    class_data = json.load(class_file)
+    class_file.close()
+    new_student = {}
+    new_student["name"] = input("New student's name: ")
+    new_student["repo"] = input("New student's repo: ")
+    class_data["students"].append(new_student)
+    os.system("git clone {} {}".format(new_student["repo"], new_student["name"]))
+    class_file = open("class.json","w")
+    json.dump(class_data,class_file)
+    print("Added new student repo for {}".format(new_student["name"]))
+
+parser = argparse.ArgumentParser(description="Manage classroom git repositories")
+subparsers = parser.add_subparsers(help="sub-command-help")
+
+#init
+parser_init = subparsers.add_parser("init",help="Initialize new git class")
+parser_init.add_argument("dir", type=str, nargs="?", default="")
+parser_init.set_defaults(func=init)
+
+#add-student
+parser_add_student = subparsers.add_parser("add-student",help="add student to the class")
+parser_add_student.set_defaults(func=add_student)
+
+args = parser.parse_args()
+args.func(args)
