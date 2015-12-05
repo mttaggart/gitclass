@@ -77,7 +77,7 @@ def update_repos(args):
     if args.student == "":
         students = class_data["students"]
         for s in students:
-            log_data += update_one(s)
+            log_data += update_one(s["name"])
     else:
         log_data = update_one(args.student)
     print(log_data)
@@ -127,22 +127,39 @@ subparsers = parser.add_subparsers(help="sub-command-help")
 
 #init
 parser_init = subparsers.add_parser("init",help="Initialize new git class")
-parser_init.add_argument("dir", type=str, nargs="?", default="")
+parser_init.add_argument("dir", type=str, nargs="?", default="", help="Name of new class folder")
 parser_init.set_defaults(func=init)
 
 #add-student
 parser_add_student = subparsers.add_parser("add-student",help="add student to the class")
-parser_add_student.add_argument("name", nargs="?", type=str, default="")
-parser_add_student.add_argument("repo", nargs="?", type=str, default="")
+parser_add_student.add_argument(
+    "name",
+    nargs="?",
+    type=str,
+    default="",
+    help="student folder name"
+)
+parser_add_student.add_argument(
+    "repo",
+     nargs="?",
+     type=str,
+     default="",
+     help="student repo URL"
+)
 parser_add_student.set_defaults(func=add_student)
 
 #remove-student
 parser_remove_student = subparsers.add_parser("remove-student",help="remove student from the class")
-parser_remove_student.add_argument("names", nargs="*", type=str)
+parser_remove_student.add_argument(
+    "names",
+    nargs="*",
+    type=str,
+    help="students (by folder) to remove"
+)
 parser_remove_student.set_defaults(func=remove_student)
 
 #update
-parser_update = subparsers.add_parser("update", help="update student repos")
+parser_update = subparsers.add_parser("update", help="Update student repos")
 parser_update.add_argument("student", nargs="?", help="Update specific student repo", type=str, default="")
 parser_update.add_argument("-l","--log-length", type=int, default=2)
 parser_update.add_argument("-d","--date-format", type=str, default="local")
