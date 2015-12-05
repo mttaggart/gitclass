@@ -1,4 +1,4 @@
-# git-classroom
+# gitclass
 Simple tools for managing student Git repositories.
 
 This is a collection of scripts I use to create and manage my Computer Science courses using Git and GitHub. I hope they're useful to you. Pull requests welcome!
