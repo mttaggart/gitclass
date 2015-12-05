@@ -18,7 +18,7 @@ Then enter the new folder. You can run the scripts from where they are, or run `
 
     gitclass init name-of-class
 
-A new directory with your class name now exists. If `name-of-class` is omitted, a the current directory will be used as the container for the class.
+A new directory with your class name now exists. If `name-of-class` is omitted, a the current directory will be used as the container for the class. You will be prompted for some information about the class, like a name, description, and master repository for the teacher's code.
 
 ### Adding students
 
