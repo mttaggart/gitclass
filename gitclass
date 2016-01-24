@@ -3,6 +3,15 @@ import os,sys,subprocess,json,argparse,shutil
 
 DATAFILE = "class.json"
 
+def vs_input(q):
+    """
+    Version-Safe Input
+    Wrapper for input to fix the Python 2/3 input/raw_input situation
+    """
+    if sys.version_info[0] > 2:
+        return input(q)
+    return raw_input(q)
+
 def get_class_data():
     try:
         class_file = open(DATAFILE,"r")
@@ -40,9 +49,9 @@ def init(args):
         "master_repo":""
     }
     print("Initializing new git class")
-    class_data["name"] = input("Name of the class: ")
-    class_data["description"] = input("Description for {}: ".format(class_data["name"]))
-    class_data["master_repo"] = input("URL of master repository: ")
+    class_data["name"] = vs_input("Name of the class: ")
+    class_data["description"] = vs_input("Description for {}: ".format(class_data["name"]))
+    class_data["master_repo"] = vs_input("URL of master repository: ")
     update_class_data(class_data)
     #Clone master repo
     os.system("git clone {}".format(class_data["master_repo"]))
@@ -87,11 +96,11 @@ def add_student(args):
     new_student = {}
 
     if args.name == "":
-        new_student["name"] = input("New student's name: ")
+        new_student["name"] = vs_input("New student's name: ")
     else:
         new_student["name"] = args.name
     if args.repo == "":
-        new_student["repo"] = input("New student's repo: ")
+        new_student["repo"] = vs_input("New student's repo: ")
     else:
         new_student["repo"] = args.repo
 
@@ -110,7 +119,7 @@ def remove_student(args):
         if s_obj:
             print("Found student")
             confirm_msg = "Are you sure you want to delete {} (y/N)?".format(s)
-            confirm = input(confirm_msg)
+            confirm = vs_input(confirm_msg)
             if confirm == "y" or confirm == "Y":
                 shutil.rmtree(s)
                 class_data["students"].remove(s_obj)
