@@ -1,15 +1,18 @@
 #!/usr/bin/python
 import os,sys,shutil
 
+SUPPORTED = ["linux","darwin"]
+
 if os.getuid() != 0:
     print("Must run as root!")
     sys.exit()
 
-if sys.platform == "linux":
+install_os = sys.platform
+#OS Check
+if install_os in SUPPORTED:
     INSTALL_PATH = "/opt/gitclass/"
-    os.mkdir(INSTALL_PATH[0:-1])
-elif sys.platform == "darwin":
-    INSTALL_PATH = "/usr/local/gitclass/"
+    if install_os = "darwin":
+        INSTALL_PATH = "/usr/local/gitclass/"
     os.mkdir(INSTALL_PATH[0:-1])
 else:
     print("Windows not yet implemented; sorry!")
