@@ -11,7 +11,7 @@ install_os = sys.platform
 #OS Check
 if install_os in SUPPORTED:
     INSTALL_PATH = "/opt/gitclass/"
-    if install_os = "darwin":
+    if install_os == "darwin":
         INSTALL_PATH = "/usr/local/gitclass/"
     os.mkdir(INSTALL_PATH[0:-1])
 else:
