@@ -1,0 +1,22 @@
+name: gitclass
+version: 0.1.0
+author: Michael Taggart <michael.t.taggart@gmail.com>
+subcommands:
+  - new:
+      about: Create new gitclass in named folder
+      args:
+        - DIR:
+            help: directory to create
+            required: true
+  - init:
+      about: Initialize new gitclass in current folder
+  - add:
+      about: Add student to gitclass
+      args:
+        name:
+            short: n
+            help: name of student
+            required: true
+        repo:
+            short: r
+            help: student repository
