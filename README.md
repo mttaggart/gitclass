@@ -11,9 +11,9 @@ Let's download the tools:
 
 Or download from the Releases page.
 
-Then enter the new folder. You can run the scripts from where they are, or run `install` (as root) to install the files.
+Then enter the new folder. You can run the scripts from where they are, or copy the executable to a directory in your path, `PATH` for example:
 
-    sudo ./install
+    sudo cp gitclass /usr/local/bin/
 
 ### Creating a classroom
 
