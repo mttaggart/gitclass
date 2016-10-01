@@ -1,12 +1,13 @@
 # gitclass
-Simple tools for managing student Git repositories.
+Simple tool for managing student Git repositories.
 
-This is a collection of scripts I use to create and manage my Computer Science courses using Git and GitHub. I hope they're useful to you. Pull requests welcome!
+## WARNING
+This project works, but is a learning project for me.
 
 ## Getting Started
 Let's download the tools:
 
-    git clone https://github.com/mttaggart/git-classroom
+    git clone https://github.com/mttaggart/gitclass
 
 Or download from the Releases page.
 
@@ -22,17 +23,19 @@ A new directory with your class name now exists. If `name-of-class` is omitted, 
 
 ### Adding students
 
-    gitclass add-student [name] [repo]
+    gitclass add-student
 
-If either `name` or `repo` is omitted, you will be prompted to enter a value.
+This will prompt for `name` and `repo` for the student, then clone the given repo into a folder of the name provided.
 
 ### Pulling Student Repos
 Perform this every time you want to ensure you have the latest commits from your students.
 
-    gitclass update [name] [-n --num-commits] [-d --date-format]
+    gitclass update
 
-This will update all repos if `[name]` is omitted, or a specific repo if stated. `--num-commits` and `--date-format` refer to the same options in Git. Defaults are `2` and `local`, respectively.
+This will update all repos.
+
+**This feature is a little hacky as I figure out the `git2` library for Rust.**
 
 ### Removing students
 
-    gitclass remove-student name
+    gitclass remove name
