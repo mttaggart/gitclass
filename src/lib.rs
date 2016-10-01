@@ -4,6 +4,8 @@ use std::io::{Write,Read};
 use std::path::PathBuf;
 #[macro_use]
 extern crate json;
+extern crate git2;
+use git2::Repository;
 
 struct Config {
     class_name: String,
@@ -47,6 +49,7 @@ pub fn add() {
     );
     config_json["students"].push(student_json);
     write_config(json::stringify_pretty(config_json,4), "./");
+    clone_repo(student.repo.as_str(), student.name.as_str());
 }
 
 fn write_config(data: String, path: &str) {
@@ -88,9 +91,9 @@ fn get_student_details() -> Student {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
+fn clone_repo(url: &str, path: &str) -> git2::Repository {
+    match Repository::clone(url.trim(), path.trim()) {
+        Ok(repo) => repo,
+        Err(e) => panic!("failed to clone: {}", e),
     }
 }
