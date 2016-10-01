@@ -25,4 +25,7 @@ fn main() {
             _ => panic!("No student provided")
         }
     }
+    if let Some(up_m) = matches.subcommand_matches("update") {
+        update();
+    }
 }
