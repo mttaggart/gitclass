@@ -20,7 +20,7 @@ struct Student {
 
 pub fn new(name: &str) {
     match fs::create_dir(name) {
-        Ok(v) => init(name),
+        Ok(_) => init(name),
         Err(e) => println!("Couldn't create: {}",e)
     }
 }
@@ -58,6 +58,16 @@ pub fn remove(name: &str) {
         write_config_json(json::stringify_pretty(config_json,4), "./");
     } else {
         println!("Student {} not known.",name);
+    }
+}
+
+pub fn update() {
+    println!("Updating student repos");
+    let config_json = get_config_json().unwrap();
+    let students = config_json["students"].entries();
+    for s in students {
+        println!("Updating {}",s.0);
+        update_repo(s.1.clone());
     }
 }
 
@@ -112,4 +122,11 @@ fn clone_repo(url: &str, path: &str) -> git2::Repository {
         Ok(repo) => repo,
         Err(e) => panic!("failed to clone: {}", e),
     }
+}
+
+fn update_repo(student: json::JsonValue) {
+    let path = student["name"].as_str().unwrap();
+    let url = student["repo"].as_str().unwrap();
+    fs::remove_dir_all(path);
+    clone_repo(url, path);
 }
