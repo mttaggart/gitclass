@@ -6,3 +6,4 @@ authors = ["mttaggart <michael.t.taggart@gmail.com>"]
 [dependencies]
 clap = {version = "2.13.0", features=["yaml"]}
 json = "0.10.2"
+git2 = "0.3"
