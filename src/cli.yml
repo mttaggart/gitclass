@@ -12,3 +12,9 @@ subcommands:
       about: Initialize new gitclass in current folder
   - add:
       about: Add student to gitclass
+  - remove:
+      about: Remove student [NAME]
+      args:
+        - STUDENT:
+            help: student to remove
+            required: true

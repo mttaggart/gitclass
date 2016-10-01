@@ -32,33 +32,49 @@ pub fn init(path: &str) {
         "className" => config.class_name.trim(),
         "description" => config.description.trim(),
         "masterRepo" => config.master_repo.trim(),
-        "students" => json::JsonValue::new_array()
+        "students" => json::JsonValue::new_object()
     };
-    write_config(json::stringify_pretty(config_json,4), path)
+    write_config_json(json::stringify_pretty(config_json,4), path)
 }
 
 pub fn add() {
-    let mut f = fs::File::open("gitclass.json").unwrap();
-    let mut config_str = String::new();
-    f.read_to_string(&mut config_str);
-    let mut config_json = json::parse(config_str.as_str()).unwrap();
+    let mut config_json = get_config_json().unwrap();
     let student = get_student_details();
     let student_json = object!(
         "name" => student.name.trim(),
         "repo" => student.repo.trim()
     );
-    config_json["students"].push(student_json);
-    write_config(json::stringify_pretty(config_json,4), "./");
+    config_json["students"][student.name.trim()] = student_json;
+    write_config_json(json::stringify_pretty(config_json,4), "./");
     clone_repo(student.repo.as_str(), student.name.as_str());
 }
 
-fn write_config(data: String, path: &str) {
+pub fn remove(name: &str) {
+    let mut config_json = get_config_json().unwrap();
+    if config_json["students"].has_key(name) {
+        println!("Removing {}", name);
+        config_json["students"].remove(name);
+        fs::remove_dir_all(name);
+        write_config_json(json::stringify_pretty(config_json,4), "./");
+    } else {
+        println!("Student {} not known.",name);
+    }
+}
+
+fn write_config_json(data: String, path: &str) {
     let mut init_path: PathBuf = PathBuf::from(path);
     init_path.push("gitclass.json");
     let mut f = fs::File::create(init_path.as_path()).unwrap();
     // let out_str = json::stringify_pretty(obj, 4);
     println!("{}",data);
     f.write(data.as_bytes());
+}
+
+fn get_config_json() -> Result<json::JsonValue, json::Error> {
+    let mut f = fs::File::open("gitclass.json").unwrap();
+    let mut config_str = String::new();
+    f.read_to_string(&mut config_str);
+    json::parse(config_str.as_str())
 }
 
 fn get_init_options() -> Config {

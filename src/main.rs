@@ -19,4 +19,10 @@ fn main() {
     if let Some(add_m) = matches.subcommand_matches("add") {
         add();
     }
+    if let Some(rem_m) = matches.subcommand_matches("remove") {
+        match rem_m.value_of("STUDENT") {
+            Some(s) => remove(s),
+            _ => panic!("No student provided")
+        }
+    }
 }
