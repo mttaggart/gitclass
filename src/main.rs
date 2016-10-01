@@ -16,4 +16,7 @@ fn main() {
     if let Some(init_m) = matches.subcommand_matches("init") {
         init("./");
     }
+    if let Some(add_m) = matches.subcommand_matches("add") {
+        add();
+    }
 }

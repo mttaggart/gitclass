@@ -12,11 +12,3 @@ subcommands:
       about: Initialize new gitclass in current folder
   - add:
       about: Add student to gitclass
-      args:
-        name:
-            short: n
-            help: name of student
-            required: true
-        repo:
-            short: r
-            help: student repository
