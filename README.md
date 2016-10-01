@@ -5,15 +5,29 @@ Simple tool for managing student Git repositories.
 This project works, but is a learning project for me.
 
 ## Getting Started
-Let's download the tools:
+
+### Installation
+You can either download the compiled executable from the [releases](https://github.com/mttaggart/gitclass/releases)
+
+Or build from source using Rust!
+
+#### Install Rust
+
+Follow the instructions [here](https://www.rust-lang.org) to install Rust, and [here](https://crates.io/install) to install Cargo, Rust's build system.
+
+Clone the repo:
 
     git clone https://github.com/mttaggart/gitclass
 
-Or download from the Releases page.
 
-Then enter the new folder. You can run the scripts from where they are, or copy the executable to a directory in your path, `PATH` for example:
+Then enter the new folder. Use Cargo to build the project
 
-    sudo cp gitclass /usr/local/bin/
+    cargo build --release
+
+This will compile the project on your platform. You can then copy the result to a directory known to your `PATH`. For example:
+
+    sudo cp target/release/gitclass /usr/local/bin/
+
 
 ### Creating a classroom
 
