@@ -2,6 +2,10 @@
 name = "gitclass"
 version = "0.5.0"
 authors = ["mttaggart <michael.t.taggart@gmail.com>"]
+license = "MIT"
+description = "Tool for teachers to manage classes using git"
+repository = "https://github.com/mttaggart/gitclass"
+readme = "README.md"
 
 [dependencies]
 clap = {version = "2.13.0", features=["yaml"]}
