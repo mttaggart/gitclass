@@ -54,7 +54,10 @@ pub fn remove(name: &str) {
     if config_json["students"].has_key(name) {
         println!("Removing {}", name);
         config_json["students"].remove(name);
-        fs::remove_dir_all(name);
+        match fs::remove_dir_all(name) {
+            Ok(_) => println!("Removed {}",name),
+            Err(e) => panic!("Couldn't remove!: {}",e)
+        };
         write_config_json(json::stringify_pretty(config_json,4), "./");
     } else {
         println!("Student {} not known.",name);
@@ -77,26 +80,41 @@ fn write_config_json(data: String, path: &str) {
     let mut f = fs::File::create(init_path.as_path()).unwrap();
     // let out_str = json::stringify_pretty(obj, 4);
     println!("{}",data);
-    f.write(data.as_bytes());
+    match f.write(data.as_bytes()) {
+        Ok(_) => println!("Config updated"),
+        Err(e) => panic!("Config not updated: {}",e)
+    };
 }
 
 fn get_config_json() -> Result<json::JsonValue, json::Error> {
     let mut f = fs::File::open("gitclass.json").unwrap();
     let mut config_str = String::new();
-    f.read_to_string(&mut config_str);
+    match f.read_to_string(&mut config_str) {
+        Ok(_) => println!("Config loaded"),
+        Err(e) => panic!("Couldn't load config: {}",e)
+    };
     json::parse(config_str.as_str())
 }
 
 fn get_init_options() -> Config {
     let mut class_name = String::new();
     println!("Enter your class's name: ");
-    io::stdin().read_line(&mut class_name);
+    match io::stdin().read_line(&mut class_name) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't read name: {}",e)
+    };
     let mut master_repo = String::new();
     println!("Enter the master repo: ");
-    io::stdin().read_line(&mut master_repo);
+    match io::stdin().read_line(&mut master_repo) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't read repo: {}",e)
+    };
     println!("Enter the description: ");
     let mut description = String::new();
-    io::stdin().read_line(&mut description);
+    match io::stdin().read_line(&mut description) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't read description: {}",e)
+    };
     return Config {
         class_name: class_name,
         master_repo: master_repo,
@@ -107,10 +125,16 @@ fn get_init_options() -> Config {
 fn get_student_details() -> Student {
     let mut name = String::new();
     println!("Student name: ");
-    io::stdin().read_line(&mut name);
+    match io::stdin().read_line(&mut name) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't read name: {}",e)
+    };
     let mut repo = String::new();
     println!("Student repo: ");
-    io::stdin().read_line(&mut repo);
+    match io::stdin().read_line(&mut repo) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't read repo: {}",e)
+    };
     return Student {
         name: name,
         repo: repo
@@ -127,6 +151,9 @@ fn clone_repo(url: &str, path: &str) -> git2::Repository {
 fn update_repo(student: json::JsonValue) {
     let path = student["name"].as_str().unwrap();
     let url = student["repo"].as_str().unwrap();
-    fs::remove_dir_all(path);
+    match fs::remove_dir_all(path) {
+        Ok(_) => {},
+        Err(e) => panic!("Couldn't remove: {}",e)
+    };
     clone_repo(url, path);
 }
