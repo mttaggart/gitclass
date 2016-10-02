@@ -15,6 +15,16 @@ Or build from source using Rust!
 
 Follow the instructions [here](https://www.rust-lang.org) to install Rust, and [here](https://crates.io/install) to install Cargo, Rust's build system.
 
+#### Cargo
+
+From here, you can simply use Cargo to get the project:
+
+    cargo install gitclass
+
+This requires `~/.cargo` to be in your `PATH` to run.
+
+#### Git
+
 Clone the repo:
 
     git clone https://github.com/mttaggart/gitclass
