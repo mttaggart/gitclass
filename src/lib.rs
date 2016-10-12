@@ -74,6 +74,10 @@ pub fn update() {
     }
 }
 
+pub fn log(name: &str) {
+    println!("Logging {}", name);
+}
+
 fn write_config_json(data: String, path: &str) {
     let mut init_path: PathBuf = PathBuf::from(path);
     init_path.push("gitclass.json");

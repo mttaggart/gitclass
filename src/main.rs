@@ -28,4 +28,10 @@ fn main() {
     if let Some(up_m) = matches.subcommand_matches("update") {
         update();
     }
+    if let Some(log_m) = matches.subcommand_matches("log") {
+        match log_m.value_of("STUDENT") {
+            Some(s) => log(s),
+            _ => panic!("No student provided")
+        }
+    }
 }

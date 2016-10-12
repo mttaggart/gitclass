@@ -20,4 +20,9 @@ subcommands:
             required: true
   - update:
       about: Update student repos
-      
+  - log:
+      about: Get git log for student [NAME]
+      args:
+        - STUDENT:
+            help: student to log
+            required: true
