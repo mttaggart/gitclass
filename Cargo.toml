@@ -11,3 +11,4 @@ readme = "README.md"
 clap = {version = "2.13.0", features=["yaml"]}
 json = "0.10.2"
 git2 = "0.3"
+chrono = "0.2.25"
