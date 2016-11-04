@@ -5,7 +5,9 @@ use std::path::PathBuf;
 #[macro_use]
 extern crate json;
 extern crate git2;
+extern crate chrono;
 use git2::Repository;
+use chrono::{NaiveDateTime, NaiveDate};
 
 struct Config {
     class_name: String,
@@ -74,8 +76,33 @@ pub fn update() {
     }
 }
 
+fn print_commits(revwalk: git2::Revwalk, repo: &git2::Repository) {
+    for c in revwalk {
+        let commit = repo.find_commit(c).unwrap();
+        let time = commit.time();
+        let seconds = time.seconds().to_string();
+        let offset = time.offset_minutes().to_string();
+        let d = match NaiveDateTime::parse_from_str(seconds.as_str(),"%s") {
+            Ok(d) => d,
+            Err(e) => panic!("{}",e)
+        } ;
+        println!("{}:\n\t {}",d, commit.message().unwrap());
+    }
+}
+
 pub fn log(name: &str) {
     println!("Logging {}", name);
+    let config_json = get_config_json().unwrap();
+    if config_json["students"].has_key(name) {
+        let repo = Repository::open(name).unwrap();
+        let mut revwalk = repo.revwalk().unwrap();
+        match revwalk.push_head() {
+            Ok(_) => print_commits(revwalk, &repo),
+            Err(e) => panic!("{}",e)
+        }
+    } else {
+        println!("Student {} not known.", name);
+    }
 }
 
 fn write_config_json(data: String, path: &str) {
