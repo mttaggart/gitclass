@@ -63,3 +63,9 @@ This will update all repos.
 ### Removing students
 
     gitclass remove name
+
+### Getting information
+
+    gitclass log <student>
+
+This will get the commit log from the master branch. No graph or ref hashes, just date and message for now.
