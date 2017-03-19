@@ -74,7 +74,7 @@ pub fn update() {
     }
 }
 
-pub fn log(name: &str, logoptions: &str) {
+pub fn log(name: &str) {
     println!("Logging {}", name);
     let config_json = get_config_json().unwrap();
     if config_json["students"].has_key(name) {
@@ -82,7 +82,6 @@ pub fn log(name: &str, logoptions: &str) {
         let output = Command::new("sh")
             .arg("-c")
             .arg("git log")
-            .arg(logoptions)
             .output()
             .expect("failed to execute process");
         println!("{}", String::from_utf8_lossy(&output.stdout));

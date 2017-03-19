@@ -26,6 +26,3 @@ subcommands:
         - STUDENT:
             help: student to log
             required: true
-        - LOGOPTIONS:
-            help: git log options
-            required: false
