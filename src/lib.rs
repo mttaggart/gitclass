@@ -1,9 +1,9 @@
 use std::fs;
 use std::io;
 use std::io::{Write,Read};
-use std::path::{Path,PathBuf};
+use std::path::{PathBuf};
 use std::process::Command;
-use std::env::{current_dir,set_current_dir};
+use std::env::{set_current_dir};
 #[macro_use]
 extern crate json;
 
@@ -172,7 +172,6 @@ fn clone_repo(url: &str, path: &str) {
 fn update_repo(student: json::JsonValue) {
     let path = student["name"].as_str().unwrap();
     set_current_dir(path);
-    let url = student["repo"].as_str().unwrap();
     let output = Command::new("sh")
         .arg("-c")
         .arg("git pull")

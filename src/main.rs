@@ -29,7 +29,7 @@ fn main() {
         update();
     }
     if let Some(log_m) = matches.subcommand_matches("log") {
-        let mut options: &str;
+        let options: &str;
         match log_m.value_of("LOGOPTIONS") {
             Some(o) => options = o,
             _ => options = ""
