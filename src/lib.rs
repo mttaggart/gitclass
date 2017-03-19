@@ -1,13 +1,11 @@
 use std::fs;
 use std::io;
 use std::io::{Write,Read};
-use std::path::PathBuf;
+use std::path::{Path,PathBuf};
+use std::process::Command;
+use std::env::{current_dir,set_current_dir};
 #[macro_use]
 extern crate json;
-extern crate git2;
-extern crate chrono;
-use git2::Repository;
-use chrono::{NaiveDateTime, NaiveDate};
 
 struct Config {
     class_name: String,
@@ -48,7 +46,7 @@ pub fn add() {
     );
     config_json["students"][student.name.trim()] = student_json;
     write_config_json(json::stringify_pretty(config_json,4), "./");
-    clone_repo(student.repo.as_str(), student.name.as_str());
+    clone_repo(student.repo.trim(), student.name.trim());
 }
 
 pub fn remove(name: &str) {
@@ -76,30 +74,18 @@ pub fn update() {
     }
 }
 
-fn print_commits(revwalk: git2::Revwalk, repo: &git2::Repository) {
-    for c in revwalk {
-        let commit = repo.find_commit(c).unwrap();
-        let time = commit.time();
-        let seconds = time.seconds().to_string();
-        let offset = time.offset_minutes().to_string();
-        let d = match NaiveDateTime::parse_from_str(seconds.as_str(),"%s") {
-            Ok(d) => d,
-            Err(e) => panic!("{}",e)
-        } ;
-        println!("{}:\n\t {}",d, commit.message().unwrap());
-    }
-}
-
-pub fn log(name: &str) {
+pub fn log(name: &str, logoptions: &str) {
     println!("Logging {}", name);
     let config_json = get_config_json().unwrap();
     if config_json["students"].has_key(name) {
-        let repo = Repository::open(name).unwrap();
-        let mut revwalk = repo.revwalk().unwrap();
-        match revwalk.push_head() {
-            Ok(_) => print_commits(revwalk, &repo),
-            Err(e) => panic!("{}",e)
-        }
+        set_current_dir(name);
+        let output = Command::new("sh")
+            .arg("-c")
+            .arg("git log")
+            .arg(logoptions)
+            .output()
+            .expect("failed to execute process");
+        println!("{}", String::from_utf8_lossy(&output.stdout));
     } else {
         println!("Student {} not known.", name);
     }
@@ -172,19 +158,25 @@ fn get_student_details() -> Student {
     }
 }
 
-fn clone_repo(url: &str, path: &str) -> git2::Repository {
-    match Repository::clone(url.trim(), path.trim()) {
-        Ok(repo) => repo,
-        Err(e) => panic!("failed to clone: {}", e),
-    }
+fn clone_repo(url: &str, path: &str) {
+    let git_line = format!("git clone {} {}", url, path);
+    println!("{}",git_line);
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg(git_line)
+        .output()
+        .expect("failed to execute process");
+    println!("{}", String::from_utf8_lossy(&output.stdout));
 }
 
 fn update_repo(student: json::JsonValue) {
     let path = student["name"].as_str().unwrap();
+    set_current_dir(path);
     let url = student["repo"].as_str().unwrap();
-    match fs::remove_dir_all(path) {
-        Ok(_) => {},
-        Err(e) => panic!("Couldn't remove: {}",e)
-    };
-    clone_repo(url, path);
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg("git pull")
+        .output()
+        .expect("failed to execute process");
+    println!("{}", String::from_utf8_lossy(&output.stdout));
 }

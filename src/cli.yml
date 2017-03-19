@@ -21,8 +21,11 @@ subcommands:
   - update:
       about: Update student repos
   - log:
-      about: Get git log for student [NAME]
+      about: Get git log for student [NAME] with git log [LOGOPTIONS]
       args:
         - STUDENT:
             help: student to log
             required: true
+        - LOGOPTIONS:
+            help: git log options
+            required: false
