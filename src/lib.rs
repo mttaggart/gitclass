@@ -34,7 +34,8 @@ pub fn init(path: &str) {
         "masterRepo" => config.master_repo.trim(),
         "students" => json::JsonValue::new_object()
     };
-    write_config_json(json::stringify_pretty(config_json,4), path)
+    write_config_json(json::stringify_pretty(config_json,4), path);
+    clone_repo(config.master_repo.trim(), config.class_name.trim());
 }
 
 pub fn add() {
