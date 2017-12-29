@@ -1,6 +1,6 @@
 [package]
 name = "gitclass"
-version = "0.7.1"
+version = "0.7.2"
 authors = ["mttaggart <michael.t.taggart@gmail.com>"]
 license = "MIT"
 description = "Tool for teachers to manage classes using git"

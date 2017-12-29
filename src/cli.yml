@@ -1,5 +1,5 @@
 name: gitclass
-version: "0.7.1"
+version: "0.7.2"
 author: Michael Taggart <michael.t.taggart@gmail.com>
 about: Manage student git repositories from the command line
 subcommands:
