@@ -41,13 +41,13 @@ This will compile the project on your platform. You can then copy the result to 
 
 ### Creating a classroom
 
-    gitclass init name-of-class
+    gitclass init 
 
-A new directory with your class name now exists. If `name-of-class` is omitted, a the current directory will be used as the container for the class. You will be prompted for some information about the class, like a name, description, and master repository for the teacher's code.
+This begins the process of creating a class. You'll be asking for a name, description, and master repository for the class. The name and description will be saved in `class.json`, and the master repo will be cloned within the current folder. 
 
 ### Adding students
 
-    gitclass add-student
+    gitclass add
 
 This will prompt for `name` and `repo` for the student, then clone the given repo into a folder of the name provided.
 
@@ -62,10 +62,10 @@ This will update all repos.
 
 ### Removing students
 
-    gitclass remove name
+    gitclass remove $name
 
 ### Getting information
 
     gitclass log <student>
 
-This will get the commit log from the master branch. No graph or ref hashes, just date and message for now.
+This will get the commit log from the master branch. Just vanilla git log for now. For more detailed info, run `git log` inside the students' folder.
