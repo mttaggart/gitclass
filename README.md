@@ -43,7 +43,7 @@ This will compile the project on your platform. You can then copy the result to 
 
     gitclass init 
 
-This begins the process of creating a class. You'll be asking for a name, description, and master repository for the class. The name and description will be saved in `class.json`, and the master repo will be cloned within the current folder. 
+This begins the process of creating a class. You'll be asking for a name, description, and master repository for the class. The name and description will be saved in `gitclass.json`, and the master repo will be cloned within the current folder. 
 
 ### Adding students
 
