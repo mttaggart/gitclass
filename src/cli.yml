@@ -1,6 +1,7 @@
 name: gitclass
 version: "0.7.0"
 author: Michael Taggart <michael.t.taggart@gmail.com>
+about: Manage student git repositories from the command line
 subcommands:
   - new:
       about: Create new gitclass in named folder
