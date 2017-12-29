@@ -66,6 +66,6 @@ This will update all repos.
 
 ### Getting information
 
-    gitclass log <student>
+    gitclass log $student
 
 This will get the commit log from the master branch. Just vanilla git log for now. For more detailed info, run `git log` inside the students' folder.
