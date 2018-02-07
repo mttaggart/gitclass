@@ -178,4 +178,5 @@ fn update_repo(student: json::JsonValue) {
         .output()
         .expect("failed to execute process");
     println!("{}", String::from_utf8_lossy(&output.stdout));
+    set_current_dir("../");
 }
