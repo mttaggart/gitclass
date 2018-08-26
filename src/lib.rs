@@ -6,6 +6,7 @@ use std::process::Command;
 use std::env::{set_current_dir};
 #[macro_use]
 extern crate json;
+extern crate git2;
 
 struct Config {
     class_name: String,
@@ -171,12 +172,36 @@ fn clone_repo(url: &str, path: &str) {
 
 fn update_repo(student: json::JsonValue) {
     let path = student["name"].as_str().unwrap();
-    set_current_dir(path);
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg("git pull")
-        .output()
-        .expect("failed to execute process");
-    println!("{}", String::from_utf8_lossy(&output.stdout));
-    set_current_dir("../");
+    let repo = match git2::Repository::open(path) {
+        Ok(repo) => repo,
+        Err(e) => panic!("Couldn't open: {}", e),
+    };
+    let master = repo.find_branch("master",git2::BranchType::Local).unwrap();
+    let upstream = match master.upstream() {
+        Ok(branch) => branch,
+        Err(e) => panic!("Couldn't open 'master' branch")
+    };
+    let upstream_name = upstream.name().unwrap().unwrap();
+    println!("Upstream is {}", upstream_name);
+    let mut ref_name = String::from("refs/remotes/");
+    ref_name.push_str(upstream_name);
+    let remotes = repo.remotes().unwrap();
+    for r in remotes.into_iter() {
+        let remote_name = r.unwrap();
+        println!("Updating remote {}", remote_name);
+        let mut remote = repo.find_remote(remote_name).unwrap();
+        remote.fetch(&["master"], None, None).unwrap();
+    }
+    let latest_obj = repo.revparse_single("HEAD").ok();
+    let remote_obj = match repo.revparse_single(ref_name.as_str()) {
+        Ok(obj) => obj,
+        Err(e) => panic!("Couldn't find the remote ref")
+    };
+
+    repo.reset(&remote_obj,
+    git2::ResetType::Hard,
+    Some(git2::build::CheckoutBuilder::new()
+        .force()
+        .remove_untracked(true)
+    ));
 }
